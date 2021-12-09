@@ -9,5 +9,6 @@ License: Commercial
 LazyData: true
 Imports: 
         httr,
-        dplyr
+        dplyr,
+	keyring
 RoxygenNote: 7.1.1

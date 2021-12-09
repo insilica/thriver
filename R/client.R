@@ -1,12 +1,18 @@
 library(httr)
 library(dplyr)
-
+library(keyring)
 base_url = "https://thriveapp.health/api"
 
 #' Set your thrive API key.
-#'
+#' @export
 set_thrive_api_key <- function() {
-  thrive_api_key <<- rstudioapi::askForPassword()
+  keyring::key_set(service = "thrive_api_key",prompt = "Thrive API Key:")
+}
+
+#' Get your thrive API key
+#' @export
+get_thrive_api_key <- function() {
+  keyring::key_get(service = "thrive_api_key")
 }
 
 #' A check that the API key is set
@@ -15,9 +21,10 @@ set_thrive_api_key <- function() {
 #' @export
 #' @examples api_key_check()
 api_key_check <- function() {
-  if(!exists("thrive_api_key")) {
+  if(length(keyring::key_list(service="thrive_api_key")$service) == 0)
+   {
     set_thrive_api_key()
-  }
+   }
 }
 
 #' Run a GraphQL Query on the web api
@@ -29,7 +36,7 @@ graphql_query <- function(query) {
   api_key_check()
   req <- httr::POST(paste0(base_url,"/graphql"),
                     body = list(query = query), encode="json",
-                    httr::add_headers('Authorization'=paste0("Bearer ",thrive_api_key)))
+                    httr::add_headers('Authorization'=paste0("Bearer ",get_thrive_api_key())))
 
   res <- httr::content(req,as = "parsed", encoding = "UTF-8")
 
@@ -54,7 +61,7 @@ graphql_query <- function(query) {
 get_file <- function(url,filename) {
   api_key_check()
   httr::GET(paste0(base_url,url),
-            httr::add_headers('Authorization' = paste0("Bearer ", thrive_api_key))) %>%
+            httr::add_headers('Authorization' = paste0("Bearer ", get_thrive_api_key()))) %>%
     content("raw") %>%
     writeBin(filename)
 
@@ -71,7 +78,7 @@ post_file <- function(patient_id,filename) {
   api_key_check()
   req <- httr::POST(paste0(base_url,"/files/patient/",patient_id,"/upload"),
              body = list(file = upload_file(filename)),
-             httr::add_headers('Authorization' = paste0("Bearer ", thrive_api_key)),
+             httr::add_headers('Authorization' = paste0("Bearer ", get_thrive_api_key())),
              encode="multipart")
 
   if(req$status_code != 200) {
@@ -91,7 +98,7 @@ post_file <- function(patient_id,filename) {
 delete_file <- function(patient_id,uuid) {
   api_key_check()
   req <- httr::DELETE(paste0(base_url,"/files/patient/",patient_id,"/uuid/",uuid,"/delete"),
-               httr::add_headers('Authorization' = paste0("Bearer ", thrive_api_key)))
+               httr::add_headers('Authorization' = paste0("Bearer ", get_thrive_api_key())))
 
   if(req$status_code != 200) {
     stop(content(req,"text"))
