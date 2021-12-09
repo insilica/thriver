@@ -30,6 +30,12 @@ devtools::install_github("insilica/thriver",auth_token=github_pat)
 # Usage
 
 You will need to request an API key to access the Thrive API. 
+On your first request, you will be prompted for your API key.
+
+If you accidentally set it to the wrong value, you can always
+```r
+set_thrive_api_key()
+```
 
 ### Handling files
 
