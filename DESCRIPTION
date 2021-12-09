@@ -1,0 +1,13 @@
+Package: thriver
+Title: thriver
+Version: 0.1
+Authors@R: person("James", "Borden", email = "james@insilica.co",
+                  role = c("aut", "cre"))
+Description: A package for interfacing with the Thrive Developer API
+Depends: R (>= 3.1.0)
+License: Commercial
+LazyData: true
+Imports: 
+        httr,
+        dplyr
+RoxygenNote: 7.1.1
