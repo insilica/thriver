@@ -5,8 +5,6 @@ base_url = "https://thriveapp.health/api"
 
 #' Set your thrive API key.
 #'
-#' @examples
-#' set_thrive_api_key()
 set_thrive_api_key <- function() {
   thrive_api_key <<- rstudioapi::askForPassword()
 }
@@ -14,8 +12,8 @@ set_thrive_api_key <- function() {
 #' A check that the API key is set
 #' Called in other functions as an initial check
 #'
-#' @examples
-#' api_key_check()
+#' @export
+#' @examples api_key_check()
 api_key_check <- function() {
   if(!exists("thrive_api_key")) {
     set_thrive_api_key()
@@ -26,6 +24,7 @@ api_key_check <- function() {
 #'
 #' @param query A properly formatted GraphQL query
 #' @return A R object representing the JSON response
+#' @export
 graphql_query <- function(query) {
   api_key_check()
   req <- httr::POST(paste0(base_url,"/graphql"),
@@ -51,7 +50,8 @@ graphql_query <- function(query) {
 #'            files associated with a patient
 #' @param filename filename to save data to locally
 #' @examples get_patient_file("/files/patient/599/d4aa531a-89a0-4720-9060-bb32fa6cecec","report.pdf")
-get_patient_file <- function(url,filename) {
+#' @export
+get_file <- function(url,filename) {
   api_key_check()
   httr::GET(paste0(base_url,url),
             httr::add_headers('Authorization' = paste0("Bearer ", thrive_api_key))) %>%
@@ -66,7 +66,8 @@ get_patient_file <- function(url,filename) {
 #' @param patient_id patient_id to upload file to
 #' @param filename local file to upload
 #' @examples post_patient-file(599,"new_report.pdf")
-post_patient_file <- function(patient_id,filename) {
+#' @export
+post_file <- function(patient_id,filename) {
   api_key_check()
   req <- httr::POST(paste0(base_url,"/files/patient/",patient_id,"/upload"),
              body = list(file = upload_file(filename)),
@@ -86,7 +87,8 @@ post_patient_file <- function(patient_id,filename) {
 #' @param patent_id patient_id for whom the file is being deleted
 #' @param uuid String representing the UUID of the file to delete
 #' @examples delete_patient_file(599,"d4aa531a-89a0-4720-9060-bb32fa6cecec")
-delete_patient_file <- function(patient_id,uuid) {
+#' @export
+delete_file <- function(patient_id,uuid) {
   api_key_check()
   req <- httr::DELETE(paste0(base_url,"/files/patient/",patient_id,"/uuid/",uuid,"/delete"),
                httr::add_headers('Authorization' = paste0("Bearer ", thrive_api_key)))
@@ -97,4 +99,3 @@ delete_patient_file <- function(patient_id,uuid) {
     return(content(req,as="parsed",encoding = "UTF-8"))
   }
 }
-

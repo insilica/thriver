@@ -9,6 +9,3 @@ set_thrive_api_key()
 \description{
 Set your thrive API key.
 }
-\examples{
-set_thrive_api_key()
-}

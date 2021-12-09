@@ -27,5 +27,9 @@ github_pat <<- rstudioapi::askForPassword()
 devtools::install_github("insilica/thriver",auth_token=github_pat)
 ```
 
+# Usage
+
+You will need to request an API key to access the Thrive API. 
+
 
 
