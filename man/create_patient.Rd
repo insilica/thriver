@@ -16,7 +16,7 @@ create_patient(first_name, last_name, practice_id)
 \item{practice_id}{The id of the practice to create this patient with}
 }
 \value{
-An object with new patient id
+graphql_query S3 object
 }
 \description{
 Create a new patient. The patient will be associated

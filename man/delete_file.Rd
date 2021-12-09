@@ -12,6 +12,9 @@ delete_file(patient_id, uuid)
 
 \item{patent_id}{patient_id for whom the file is being deleted}
 }
+\value{
+The JSON response
+}
 \description{
 Delete a file associated with a patient. Use caution when using this function
 as it should only be called to correct mistaken uploads

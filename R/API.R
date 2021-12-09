@@ -4,7 +4,7 @@ library(dplyr)
 #' Get all of the patient ids for a practice
 #'
 #' @param practice_id The practice_id to obtain the list
-#' @returns A list of patients ids
+#' @returns graphql_query S3 object
 #' @examples get_patient_ids(1)
 #' @export
 get_patient_ids <- function(practice_id) {
@@ -16,8 +16,7 @@ get_patient_ids <- function(practice_id) {
 #' Get all of the files associated with a patient
 #'
 #' @param patient_id the id of the patient to obtain the list for
-#' @returns A list of objects containing the filename, url and uuid of each
-#'          file associated with a patient
+#' @returns graphql_query S3 object
 #' @examples get_patient_file_list(4)
 #' @export
 get_patient_file_list <- function(patient_id) {
@@ -33,7 +32,7 @@ get_patient_file_list <- function(patient_id) {
 #' @param last_name Last Name of patient
 #' @param practice_id The id of the practice to create this patient with
 #'
-#' @returns An object with new patient id
+#' @returns graphql_query S3 object
 #' @examples create_patient("Foo","Bar",1)
 #' @export
 create_patient <- function(first_name,last_name,practice_id) {

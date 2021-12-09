@@ -1,6 +1,7 @@
 library(httr)
 library(dplyr)
 library(keyring)
+library(jsonlite)
 base_url = "https://thriveapp.health/api"
 
 #' Set your thrive API key.
@@ -30,23 +31,37 @@ api_key_check <- function() {
 #' Run a GraphQL Query on the web api
 #'
 #' @param query A properly formatted GraphQL query
-#' @return A R object representing the JSON response
+#' @return An S3 graphql_query object
 #' @export
 graphql_query <- function(query) {
   api_key_check()
-  req <- httr::POST(paste0(base_url,"/graphql"),
+  resp <- httr::POST(paste0(base_url,"/graphql"),
                     body = list(query = query), encode="json",
                     httr::add_headers('Authorization'=paste0("Bearer ",get_thrive_api_key())))
 
-  res <- httr::content(req,as = "parsed", encoding = "UTF-8")
-
-  if(req$status_code != 200) {
-    stop(content(req))
-  } else if(!is.null(res$errors)){
-    stop(res$errors[[1]]$message)
-  } else{
-    return(res$data)
+  parsed <- jsonlite::fromJSON(content(resp, "text",encoding="UTF-8"), simplifyVector = FALSE)
+  
+  if(resp$status_code != 200) {
+    stop(content(resp))
+  } else if(!is.null(parsed$errors)){
+    stop(parsed)
   }
+  
+  structure(
+    list(
+      content = parsed,
+      response = resp
+    ),
+    class = "graphql_query"
+  )
+}
+
+#'
+#' @export
+print.graphql_query <- function(x, ...) {
+  cat("<graphql_query>\n")
+  str(x$content)
+  invisible(x)
 }
 
 #' Get a patient file from the server and
@@ -56,6 +71,7 @@ graphql_query <- function(query) {
 #'            Use `get_patient_file_list` to get the proper url and filename for
 #'            files associated with a patient
 #' @param filename filename to save data to locally
+#' @return A string representing the location of the file locally
 #' @examples get_patient_file("/files/patient/599/d4aa531a-89a0-4720-9060-bb32fa6cecec","report.pdf")
 #' @export
 get_file <- function(url,filename) {
@@ -72,19 +88,21 @@ get_file <- function(url,filename) {
 #'
 #' @param patient_id patient_id to upload file to
 #' @param filename local file to upload
+#' @return JSON of the response
 #' @examples post_patient-file(599,"new_report.pdf")
 #' @export
 post_file <- function(patient_id,filename) {
   api_key_check()
-  req <- httr::POST(paste0(base_url,"/files/patient/",patient_id,"/upload"),
-             body = list(file = upload_file(filename)),
-             httr::add_headers('Authorization' = paste0("Bearer ", get_thrive_api_key())),
-             encode="multipart")
-
-  if(req$status_code != 200) {
-    stop(content(req,"text"))
+  resp <- httr::POST(paste0(base_url,"/files/patient/",patient_id,"/upload"),
+                    body = list(file = upload_file(filename)),
+                    httr::add_headers('Authorization' = paste0("Bearer ", get_thrive_api_key())),
+                    encode="multipart")
+  parsed <- jsonlite::fromJSON(content(resp, "text",encoding="UTF-8"), simplifyVector = FALSE)
+  
+  if(resp$status_code != 200) {
+    stop(content(resp,"text"))
   } else {
-    return(content(req,as="parsed",encoding = "UTF-8"))
+    return(parsed)
   }
 }
 
@@ -93,16 +111,19 @@ post_file <- function(patient_id,filename) {
 #'
 #' @param patent_id patient_id for whom the file is being deleted
 #' @param uuid String representing the UUID of the file to delete
+#' @return The JSON response
 #' @examples delete_patient_file(599,"d4aa531a-89a0-4720-9060-bb32fa6cecec")
 #' @export
 delete_file <- function(patient_id,uuid) {
   api_key_check()
-  req <- httr::DELETE(paste0(base_url,"/files/patient/",patient_id,"/uuid/",uuid,"/delete"),
+  resp <- httr::DELETE(paste0(base_url,"/files/patient/",patient_id,"/uuid/",uuid,"/delete"),
                httr::add_headers('Authorization' = paste0("Bearer ", get_thrive_api_key())))
 
-  if(req$status_code != 200) {
-    stop(content(req,"text"))
+  parsed <- jsonlite::fromJSON(content(resp, "text",encoding="UTF-8"), simplifyVector = FALSE)
+  
+  if(resp$status_code != 200) {
+    stop(content(resp,"text"))
   } else {
-    return(content(req,as="parsed",encoding = "UTF-8"))
+    return(parsed)
   }
 }

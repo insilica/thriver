@@ -14,6 +14,9 @@ files associated with a patient}
 
 \item{filename}{filename to save data to locally}
 }
+\value{
+A string representing the location of the file locally
+}
 \description{
 Get a patient file from the server and
 save it locally in getwd().

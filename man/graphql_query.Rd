@@ -10,7 +10,7 @@ graphql_query(query)
 \item{query}{A properly formatted GraphQL query}
 }
 \value{
-A R object representing the JSON response
+An S3 graphql_query object
 }
 \description{
 Run a GraphQL Query on the web api

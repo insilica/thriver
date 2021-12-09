@@ -11,6 +11,9 @@ post_file(patient_id, filename)
 
 \item{filename}{local file to upload}
 }
+\value{
+JSON of the response
+}
 \description{
 Upload a file to a patient.
 }
