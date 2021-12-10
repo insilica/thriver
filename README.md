@@ -68,7 +68,7 @@ thriver::post_file(893,"~/Gene_Report.pdf")
 #> [1] TRUE
 ```
 
-Report is present in patient's file list
+Report is present in the patient's file list
 ```r
 thriver::get_patient_file_list(893)
 #> <graphql_query>
