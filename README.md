@@ -39,8 +39,8 @@ set_thrive_api_key()
 
 ### File Handling
 
-You will need the patient id and be a provider in their practice
-Obtain a report for a patient by listing their files
+You will need the patient id and be a provider in their practice.
+Get a list of files associated with the patient
 
 ```r
 thriver::get_patient_file_list(893)
@@ -55,20 +55,20 @@ thriver::get_patient_file_list(893)
 #>  .. .. .. ..$ uuid    : chr "12f7193b-e81e-4eef-8fdb-c683d21de3ce"
 ```  
 
-Obtain the report
+Get the maf file to generate a PDF report
 ```r
 thriver::get_file("12f7193b-e81e-4eef-8fdb-c683d21de3ce","TCGA.PRAD.mutect.deca36be-bf05-441a-b2e4-394228f23fbe.DR-10.0.somatic.case_id.75a7afb5-66d5-47e3-8a8a-3e3a1e749a96.maf")
 #> [1] "/Users/james/Insilica/thrive-R/TCGA.PRAD.mutect.deca36be-bf05-441a-b2e4-394228f23fbe.DR-10.0.somatic.case_id.75a7afb5-66d5-47e3-8a8a-3e3a1e749a96.maf"
 ```
 
-Upload a new patient report
+Upload the PDF report
 ```r
 thriver::post_file(893,"~/Gene_Report.pdf")
 #> $success
 #> [1] TRUE
 ```
 
-New report is present
+Report is present in patient's file list
 ```r
 thriver::get_patient_file_list(893)
 #> <graphql_query>
