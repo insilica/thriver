@@ -45,7 +45,7 @@ create_patient <- function(first_name,last_name,practice_id) {
 #'
 #' @param practice_id The practice id to obtain reports for
 #' @return graphql_query S3 object
-#' @example get_patient_reports(1)
+#' @examples get_patient_reports(1)
 #' @export
 get_patient_reports <- function(project_id) {
   query <- sprintf("{PracticePatientReports(practiceId:%s) {patientReports {patient {mrn firstName lastName}

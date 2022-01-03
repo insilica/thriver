@@ -12,4 +12,4 @@ Imports:
         dplyr,
 	keyring,
 	jsonlite
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
