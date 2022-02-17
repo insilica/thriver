@@ -9,7 +9,7 @@ License: Commercial
 LazyData: true
 Imports: 
         httr,
-        dplyr,
-	keyring,
-	jsonlite
+        keyring,
+        jsonlite,
+        utils
 RoxygenNote: 7.1.2
