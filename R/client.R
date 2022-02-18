@@ -78,7 +78,7 @@ print.graphql_query <- function(x, ...) {
 get_file <- function(url,filename) {
   api_key_check()
   httr::GET(URLencode(url),
-            httr::add_headers('Authorization' = paste0("Bearer ", get_thrive_api_key()))) |<
+            httr::add_headers('Authorization' = paste0("Bearer ", get_thrive_api_key()))) |>
     content("raw") |>
     writeBin(filename)
 
