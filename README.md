@@ -6,9 +6,6 @@ The aim of **thriver** is to make interacting with the Thrive API easy for R use
 
 ### Prerequisites
 
-**thriver** is currently hosted in a private repo. You must generate a 
-GitHub Personal Access Token (PAT) for access.
-
 Navigate to
 https://github.com/settings/tokens
 
