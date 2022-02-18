@@ -2,8 +2,11 @@
 
 S3method(print,graphql_query)
 export(api_key_check)
+export(create_patient)
 export(delete_file)
 export(get_file)
+export(get_patient_file_list)
+export(get_patient_ids)
 export(get_thrive_api_key)
 export(graphql_query)
 export(post_file)

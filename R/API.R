@@ -5,6 +5,7 @@ library(httr)
 #' @param practice_id The practice_id to obtain the list
 #' @returns A list of patients ids
 #' @examples get_patient_ids(1)
+#' @export
 get_patient_ids <- function(practice_id) {
   query <- sprintf("{Practice(id:%s){patients{id}}}",
                       practice_id)
@@ -17,6 +18,7 @@ get_patient_ids <- function(practice_id) {
 #' @returns A list of objects containing the filename, url and uuid of each
 #'          file associated with a patient
 #' @examples get_patient_file_list(4)
+#' @export
 get_patient_file_list <- function(patient_id) {
   query <- sprintf("{Patient(id:%s){files{filename,url,uuid}}}",patient_id)
   graphql_query(query)
@@ -28,9 +30,10 @@ get_patient_file_list <- function(patient_id) {
 #'
 #' @param first_name First Name of patient
 #' @param last_name Last Name of patient
-#' @practice_id The id of the practice to create this patient with
+#' @param practice_id The id of the practice to create this patient with
 #'
 #' @returns An object with new patient id
+#' @export
 #' @examples create_patient("Foo","Bar",1)
 create_patient <- function(first_name,last_name,practice_id) {
   query <- sprintf("mutation createPatient{createPatient(patient:{firstName:\"%s\",lastName:\"%s\",practiceId:%i}){id}}",
