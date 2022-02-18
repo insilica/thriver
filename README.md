@@ -4,13 +4,6 @@ The aim of **thriver** is to make interacting with the Thrive API easy for R use
 
 # Installation
 
-### Prerequisites
-
-Navigate to
-https://github.com/settings/tokens
-
-### Install
-
 ```r
 devtools::install_github("insilica/thriver")
 ```
