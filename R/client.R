@@ -39,10 +39,10 @@ graphql_query <- function(query) {
                     body = list(query = query), encode="json",
                     httr::add_headers('Authorization'=paste0("Bearer ",get_thrive_api_key())))
 
-  parsed <- jsonlite::fromJSON(content(resp, "text",encoding="UTF-8"), simplifyVector = FALSE)
+  parsed <- jsonlite::fromJSON(httr::content(resp, "text",encoding="UTF-8"), simplifyVector = FALSE)
 
   if(resp$status_code != 200) {
-    stop(content(resp))
+    stop(httr::content(resp))
   } else if(!is.null(parsed$errors)){
     stop(parsed)
   }
@@ -79,7 +79,7 @@ get_file <- function(url,filename) {
   api_key_check()
   httr::GET(URLencode(url),
             httr::add_headers('Authorization' = paste0("Bearer ", get_thrive_api_key()))) |>
-    content("raw") |>
+    httr::content("raw") |>
     writeBin(filename)
 
   return(paste0(getwd(),"/",filename))
@@ -98,10 +98,10 @@ post_file <- function(patient_id,filename) {
                     body = list(file = upload_file(filename)),
                     httr::add_headers('Authorization' = paste0("Bearer ", get_thrive_api_key())),
                     encode="multipart")
-  parsed <- jsonlite::fromJSON(content(resp, "text",encoding="UTF-8"), simplifyVector = FALSE)
+  parsed <- jsonlite::fromJSON(httr::content(resp, "text",encoding="UTF-8"), simplifyVector = FALSE)
 
   if(resp$status_code != 200) {
-    stop(content(resp,"text"))
+    stop(httr::content(resp,"text"))
   } else {
     return(parsed)
   }
@@ -120,10 +120,10 @@ delete_file <- function(patient_id,uuid) {
   resp <- httr::DELETE(paste0(base_url,"/files/patient/",patient_id,"/uuid/",uuid,"/delete"),
                httr::add_headers('Authorization' = paste0("Bearer ", get_thrive_api_key())))
 
-  parsed <- jsonlite::fromJSON(content(resp, "text",encoding="UTF-8"), simplifyVector = FALSE)
+  parsed <- jsonlite::fromJSON(httr::content(resp, "text",encoding="UTF-8"), simplifyVector = FALSE)
 
   if(resp$status_code != 200) {
-    stop(content(resp,"text"))
+    stop(httr::content(resp,"text"))
   } else {
     return(parsed)
   }
