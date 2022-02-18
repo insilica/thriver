@@ -10,7 +10,8 @@ get_patient_file_list(patient_id)
 \item{patient_id}{the id of the patient to obtain the list for}
 }
 \value{
-graphql_query S3 object
+A list of objects containing the filename, url and uuid of each
+         file associated with a patient
 }
 \description{
 Get all of the files associated with a patient

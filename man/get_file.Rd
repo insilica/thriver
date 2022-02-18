@@ -8,7 +8,7 @@ save it locally in getwd().}
 get_file(url, filename)
 }
 \arguments{
-\item{url}{A url representing the location of the file on the Thrive server
+\item{url}{A uri representing the location of the file on the Thrive server
 Use `get_patient_file_list` to get the proper url and filename for
 files associated with a patient}
 
@@ -22,5 +22,6 @@ Get a patient file from the server and
 save it locally in getwd().
 }
 \examples{
-get_patient_file("/files/patient/599/d4aa531a-89a0-4720-9060-bb32fa6cecec","report.pdf")
+get_file("http://localhost:3001/files/patient/628/ed2b036a-63ea-4d0a-84b9-ea1cc7109db0/image\%20(1).png",
+                            "image (1).png")
 }

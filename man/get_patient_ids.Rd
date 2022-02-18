@@ -10,7 +10,7 @@ get_patient_ids(practice_id)
 \item{practice_id}{The practice_id to obtain the list}
 }
 \value{
-graphql_query S3 object
+A list of patients ids
 }
 \description{
 Get all of the patient ids for a practice
