@@ -95,7 +95,7 @@ get_file <- function(url,filename) {
 post_file <- function(patient_id,filename) {
   api_key_check()
   resp <- httr::POST(paste0(base_url,"/files/patient/",patient_id,"/upload"),
-                    body = list(file = upload_file(filename)),
+                    body = list(file = httr::upload_file(filename)),
                     httr::add_headers('Authorization' = paste0("Bearer ", get_thrive_api_key())),
                     encode="multipart")
   parsed <- jsonlite::fromJSON(httr::content(resp, "text",encoding="UTF-8"), simplifyVector = FALSE)
