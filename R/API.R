@@ -1,5 +1,3 @@
-library(httr)
-
 #' Get all of the patient ids for a practice
 #'
 #' @param practice_id The practice_id to obtain the list
@@ -41,4 +39,13 @@ create_patient <- function(first_name,last_name,practice_id) {
   graphql_query(query)
 }
 
-
+#' Return the list of practices this app is installed on
+#'
+#' @returns A list of ints of the practices
+#' @example application_practices()
+#' @export
+application_practices <- function() {
+  query <- sprintf("{ApplicationPractices}")
+  resp <- graphql_query(query)
+  resp$content$data$ApplicationPractices
+}

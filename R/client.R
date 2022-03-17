@@ -3,11 +3,12 @@ library(keyring)
 library(jsonlite)
 library(utils)
 base_url = "https://thriveapp.health/api"
+#base_url = "http://localhost:3001/api"
 
 #' Set your thrive API key.
 #' @export
 set_thrive_api_key <- function() {
-  keyring::key_set(service = "thrive_api_key",prompt = "Thrive API Key:")
+    keyring::key_set(service = "thrive_api_key",prompt = "Thrive API Key:")
 }
 
 #' Get your thrive API key
@@ -77,12 +78,16 @@ print.graphql_query <- function(x, ...) {
 #' @export
 get_file <- function(url,filename) {
   api_key_check()
-  httr::GET(URLencode(url),
-            httr::add_headers('Authorization' = paste0("Bearer ", get_thrive_api_key()))) |>
-    httr::content("raw") |>
-    writeBin(filename)
+  resp <- httr::GET(URLencode(url),
+                    httr::add_headers('Authorization' = paste0("Bearer ", get_thrive_api_key())))
 
-  return(paste0(getwd(),"/",filename))
+  if(resp$status_code != 200) {
+    stop(httr::content(resp,"text",encoding="UTF-8"))
+  } else {
+    resp |> httr::content("raw") |> writeBin(filename)
+    return(paste0(getwd(),"/",filename))
+  }
+
 }
 
 #' Upload a file to a patient.
@@ -98,13 +103,14 @@ post_file <- function(patient_id,filename) {
                     body = list(file = httr::upload_file(filename)),
                     httr::add_headers('Authorization' = paste0("Bearer ", get_thrive_api_key())),
                     encode="multipart")
-  parsed <- jsonlite::fromJSON(httr::content(resp, "text",encoding="UTF-8"), simplifyVector = FALSE)
-
   if(resp$status_code != 200) {
-    stop(httr::content(resp,"text"))
+    stop(httr::content(resp,"text",encoding="UTF-8"))
   } else {
+    parsed <- jsonlite::fromJSON(httr::content(resp, "text",encoding="UTF-8"),
+                                 simplifyVector = FALSE)
     return(parsed)
   }
+
 }
 
 #' Delete a file associated with a patient. Use caution when using this function
@@ -120,11 +126,11 @@ delete_file <- function(patient_id,uuid) {
   resp <- httr::DELETE(paste0(base_url,"/files/patient/",patient_id,"/uuid/",uuid,"/delete"),
                httr::add_headers('Authorization' = paste0("Bearer ", get_thrive_api_key())))
 
-  parsed <- jsonlite::fromJSON(httr::content(resp, "text",encoding="UTF-8"), simplifyVector = FALSE)
-
   if(resp$status_code != 200) {
-    stop(httr::content(resp,"text"))
+    stop(httr::content(resp,"text",encoding="UTF-8"))
   } else {
+    parsed <- jsonlite::fromJSON(httr::content(resp, "text",encoding="UTF-8"),
+                                 simplifyVector = FALSE)
     return(parsed)
   }
 }
