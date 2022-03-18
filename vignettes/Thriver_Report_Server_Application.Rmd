@@ -1,0 +1,47 @@
+---
+title: "Create a Report Server Application"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Workflow
+
+Creating a Thrive Application involves writing a small HTTP server hosted by you. The first step is to create an Application on Thrive so that you can obtain credentials for installing.
+
+## thriver
+
+You can require the thriver library and set your credentials
+```{r}
+library(thriver)
+```
+
+This will provided you with the tools you will need to communicate with the server.
+See the [README.md](https://github.com/insilica/thriver#readme) for getting started with the library. Your application devkey will be your thrive api key
+
+## plumber server template
+You can run the server.R code which has a simple POST URL. Replace your code with that in the print(json) section.
+
+```{r}
+library(plumber)
+plumber::pr(here::here("vignettes/server.R")) |>
+  plumber::pr_run(port=8001,host="0.0.0.0")
+```
+
+In server.R you will see a single route for **/thrive/webhook**. Your application should respond to events sent from the Thrive server to this url. The events your application will receive include "new-file", "new-patient", and "edit-patient". The most pertinent event for report-generating services is the "new-file" event. Some sample code:
+
+```{r}
+post_report <- function(patient_id) {
+  resp <- get_patient_file_list(patient_id)
+  files <- resp$content$data$Patient$files
+  # ... do something with files here
+  # post_file(patient_id,generate_report(files))
+}
+
+```
+
+
