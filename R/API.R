@@ -42,7 +42,7 @@ create_patient <- function(first_name,last_name,practice_id) {
 #' Return the list of practices this app is installed on
 #'
 #' @returns A list of ints of the practices
-#' @example application_practices()
+#' @examples application_practices()
 #' @export
 application_practices <- function() {
   query <- sprintf("{ApplicationPractices}")

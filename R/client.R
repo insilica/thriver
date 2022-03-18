@@ -1,7 +1,3 @@
-library(httr)
-library(keyring)
-library(jsonlite)
-library(utils)
 base_url = "https://thriveapp.health/api"
 #base_url = "http://localhost:3001/api"
 

@@ -1,6 +1,12 @@
 ---
 title: "Create a Report Server Application"
-output: html_document
+output: rmarkdown::html_vignette
+description: >
+  Learn how to create a Report Server Application.
+vignette: >
+  %\VignetteIndexEntry{Create a Report Server Application}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 editor_options: 
   chunk_output_type: console
 ---

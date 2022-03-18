@@ -128,7 +128,15 @@ structure(
   )
 ```
 
+# Developer Notes
 
+generate documentation
+```r
+devtools::document()
+```
 
-
-
+load for testing locally
+```r
+remotes::install_local("/Users/james/Insilica/thriver", build_vignettes = TRUE)
+library("thriver", lib.loc="~/Insilica/thriver")
+```
